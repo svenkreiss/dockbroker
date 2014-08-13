@@ -1,3 +1,4 @@
+// Package dockbroker provides a daemon for peer-to-peer computing.
 package main
 
 import (
@@ -23,21 +24,25 @@ func makeJsonHandler(fn func(r *http.Request) interface{}) http.HandlerFunc {
 }
 
 
+// Structure to be returned in the /info/ api.
 type Info struct {
 	BrokerName string
 	Path string
 }
 
+// Returns a struct for an info request.
 func infoHandler(r *http.Request) interface{} {
 	return Info{"Paul", r.URL.Path}
 }
 
 
+// Structure to be returned in the /offer/ api.
 type Offer struct {
 	Price float64
 	EstCompletionTime time.Time
 }
 
+// Returns a struct for an offer request.
 func offerHandler(r *http.Request) interface{} {
 	return Offer{20.50, time.Now()}
 }

@@ -1,3 +1,4 @@
+// Package docksubmit submits a job to a dockbroker.
 package main
 
 import (
@@ -6,6 +7,7 @@ import (
     "io/ioutil"
 )
 
+// Simple request to an API endpoint from dockbroker.
 func brokerGet(url string) []byte {
     resp, err := http.Get(url)
     if err != nil { panic(err) }
