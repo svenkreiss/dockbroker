@@ -49,6 +49,14 @@ func offerHandler(r *http.Request) interface{} {
 
 
 func main() {
+    fmt.Printf("Queuing fake jobs.\n")
+    NewJob("test job")
+    NewJob("test job1")
+    NewJob("test job2")
+    NewJob("test job3")
+    fmt.Printf("Printing fake jobs.\n")
+    PrintQueue()
+
 	fmt.Printf("Starting dockbroker daemon on port 4027.\n")
     http.HandleFunc("/info/", makeJsonHandler(infoHandler))
     http.HandleFunc("/offer/", makeJsonHandler(offerHandler))
