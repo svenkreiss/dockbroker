@@ -1,6 +1,6 @@
 # Dockbroker
 
-> Peer-to-peer computing with Docker. In Go.
+> Peer-to-peer computing with Docker. Written in Go.
 
 [![GoDoc](https://godoc.org/github.com/svenkreiss/dockbroker?status.png)](https://godoc.org/github.com/svenkreiss/dockbroker)
 [![Build Status](https://travis-ci.org/svenkreiss/dockbroker.png?branch=master)](https://travis-ci.org/svenkreiss/dockbroker)
