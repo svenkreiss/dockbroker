@@ -7,7 +7,7 @@ import (
 
 // Job describes a job.
 type Job struct {
-    JobName string
+    Name string
     Submitter string
     EstTime time.Time
     MaxTime time.Time
