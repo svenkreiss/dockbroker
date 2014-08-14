@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 )
 
-func makeJsonHandler(fn func(r *http.Request) interface{}) http.HandlerFunc {
+func makeJSONHandler(fn func(r *http.Request) interface{}) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		obj := fn(r)
 
@@ -24,7 +24,7 @@ func makeJsonHandler(fn func(r *http.Request) interface{}) http.HandlerFunc {
 }
 
 
-// Structure to be returned in the /info/ api.
+// Info structure to be returned in the /info/ api.
 type Info struct {
 	BrokerName string
 	Path string
@@ -36,7 +36,7 @@ func infoHandler(r *http.Request) interface{} {
 }
 
 
-// Structure to be returned in the /offer/ api.
+// Offer structure to be returned in the /offer/ api.
 type Offer struct {
 	Price float64
 	EstCompletionTime time.Time
@@ -58,7 +58,7 @@ func main() {
     Queue.Print()
 
 	fmt.Printf("Starting dockbroker daemon on port 4027.\n")
-    http.HandleFunc("/info/", makeJsonHandler(infoHandler))
-    http.HandleFunc("/offer/", makeJsonHandler(offerHandler))
+    http.HandleFunc("/info/", makeJSONHandler(infoHandler))
+    http.HandleFunc("/offer/", makeJSONHandler(offerHandler))
     http.ListenAndServe(":4027", nil)
 }

@@ -6,7 +6,7 @@ import (
 )
 
 
-
+// Job description
 type Job struct {
     Name string
     id int
@@ -17,32 +17,34 @@ func (j *Job) Print() {
 }
 
 
-
+// JobQueue is the dockbroker queue of jobs
 type JobQueue struct {
     l *list.List
-    lastId int
+    lastID int
 }
 
+// QueueElement is a more generic interface (than specific the Job structure)
+// for the JobQueue.
 type QueueElement interface {
     Print()
 }
 
-// add a job to the queue
+// Enqueue adds a job to the queue.
 func (jq *JobQueue) Enqueue(qe QueueElement) {
     jq.l.PushBack(qe)
 }
 
-// print an overview of the current queue
+// Print an overview of the current queue.
 func (jq *JobQueue) Print() {
     for j := jq.l.Front(); j != nil; j = j.Next() {
         j.Value.(QueueElement).Print()
     }
 }
 
-// create a new Job and Enqueue() it
+// NewJob creates a new Job and enqueues it.
 func (jq *JobQueue) NewJob(name string) {
-    jq.lastId++
-    job := Job{name, jq.lastId}
+    jq.lastID++
+    job := Job{name, jq.lastID}
     jq.Enqueue(&job)
 }
 
