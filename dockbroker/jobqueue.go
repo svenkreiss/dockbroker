@@ -12,6 +12,7 @@ type Job struct {
     id int
 }
 
+// Print Job information.
 func (j *Job) Print() {
     fmt.Printf("job: name=%s, id=%d\n", j.Name, j.id)
 }
