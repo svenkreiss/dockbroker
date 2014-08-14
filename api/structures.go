@@ -1,4 +1,4 @@
-//Package api provides the structures for the JSON interface.
+//Package api provides the structures for the JSON API.
 package api
 
 import (
@@ -20,7 +20,7 @@ type Offer struct {
 }
 
 // BrokerInfo describes the broker.
-type BrokerInfo struct {
+type Broker struct {
     Name string
     Note string
 }

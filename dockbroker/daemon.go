@@ -28,7 +28,7 @@ func makeJSONHandler(fn func(r *http.Request) interface{}) http.HandlerFunc {
 
 // Returns a struct for an info request.
 func infoHandler(r *http.Request) interface{} {
-	return api.BrokerInfo{"Paul", r.URL.Path}
+	return api.Broker{"Paul", r.URL.Path}
 }
 
 // Returns a struct for an offer request.
