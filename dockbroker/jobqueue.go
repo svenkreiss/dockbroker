@@ -2,19 +2,26 @@ package main
 
 import (
     "fmt"
+    "time"
     "container/list"
+
+    "github.com/svenkreiss/dockbroker/api"
 )
 
 
 // Job description
 type Job struct {
-    Name string
+    Manifest api.Job
     id int
+
+    Started *time.Time
+    Finished *time.Time
 }
 
 // Print Job information.
 func (j *Job) Print() {
-    fmt.Printf("job: name=%s, id=%d\n", j.Name, j.id)
+    fmt.Printf("job: name=%s, id=%d, started=%v, finished=%v\n",
+               j.Manifest.Name, j.id, j.Started, j.Finished)
 }
 
 
@@ -43,10 +50,12 @@ func (jq *JobQueue) Print() {
 }
 
 // NewJob creates a new Job and enqueues it.
-func (jq *JobQueue) NewJob(name string) {
+func (jq *JobQueue) NewJob(manifest api.Job) {
     jq.lastID++
-    job := Job{name, jq.lastID}
-    jq.Enqueue(&job)
+    job := new(Job)
+    job.Manifest = manifest
+    job.id = jq.lastID
+    jq.Enqueue(job)
 }
 
 // the job queue for this broker

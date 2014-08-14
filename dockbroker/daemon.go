@@ -33,16 +33,13 @@ func infoHandler(r *http.Request) interface{} {
 
 // Returns a struct for an offer request.
 func offerHandler(r *http.Request) interface{} {
-	return api.Offer{20.50, time.Now()}
+	return api.Offer{20.50, time.Now().Add(10 * time.Minute)}
 }
 
 
 func main() {
     fmt.Printf("Queuing fake jobs.\n")
-    Queue.NewJob("test job")
-    Queue.NewJob("test job1")
-    Queue.NewJob("test job2")
-    Queue.NewJob("test job3")
+    Queue.NewJob(api.Job{"test job", "me", 24 * time.Hour, 12 * time.Hour})
     fmt.Printf("Printing fake jobs.\n")
     Queue.Print()
 
