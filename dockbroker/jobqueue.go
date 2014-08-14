@@ -24,7 +24,7 @@ type JobQueue struct {
     lastID int
 }
 
-// QueueElement is a more generic interface (than specific the Job structure)
+// QueueElement is a more generic interface (than the specific Job structure)
 // for the JobQueue.
 type QueueElement interface {
     Print()

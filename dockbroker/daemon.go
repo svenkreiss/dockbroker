@@ -6,6 +6,8 @@ import (
 	"time"
 	"net/http"
 	"encoding/json"
+
+	"github.com/svenkreiss/dockbroker/api"
 )
 
 func makeJSONHandler(fn func(r *http.Request) interface{}) http.HandlerFunc {
@@ -24,27 +26,14 @@ func makeJSONHandler(fn func(r *http.Request) interface{}) http.HandlerFunc {
 }
 
 
-// Info structure to be returned in the /info/ api.
-type Info struct {
-	BrokerName string
-	Path string
-}
-
 // Returns a struct for an info request.
 func infoHandler(r *http.Request) interface{} {
-	return Info{"Paul", r.URL.Path}
-}
-
-
-// Offer structure to be returned in the /offer/ api.
-type Offer struct {
-	Price float64
-	EstCompletionTime time.Time
+	return api.BrokerInfo{"Paul", r.URL.Path}
 }
 
 // Returns a struct for an offer request.
 func offerHandler(r *http.Request) interface{} {
-	return Offer{20.50, time.Now()}
+	return api.Offer{20.50, time.Now()}
 }
 
 
