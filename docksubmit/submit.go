@@ -1,4 +1,4 @@
-// Package docksubmit submits a job to a dockbroker.
+// docksubmit is a command line tool to submit jobs to dockbroker.
 package main
 
 import (

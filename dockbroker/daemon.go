@@ -1,4 +1,4 @@
-// Package dockbroker provides a daemon for peer-to-peer computing.
+// dockbroker is a daemon that manages a node for peer-to-peer computing.
 package main
 
 import (
