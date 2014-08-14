@@ -9,8 +9,8 @@ import (
 type Job struct {
     Name string
     Submitter string
-    EstTime time.Time
-    MaxTime time.Time
+    EstDuration time.Duration
+    MaxDuration time.Duration
 }
 
 // Offer holds the data about a broker's offer.
