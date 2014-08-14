@@ -1,4 +1,3 @@
-// Package jobqueue provides the book-keeping for the dockbroker jobs.
 package main
 
 import (
@@ -6,30 +5,47 @@ import (
     "container/list"
 )
 
+
+
 type Job struct {
     Name string
     id int
 }
 
-// the job queue for this broker
-var queue = list.New()
-var lastId = 0
-
-// add a job to the queue
-func Enqueue(job Job) {
-    queue.PushBack(job)
+func (j *Job) Print() {
+    fmt.Printf("job: name=%s, id=%d\n", j.Name, j.id)
 }
 
-// create a new Job and Enqueue() it
-func NewJob(name string) {
-    lastId += 1
-    job := Job{name, lastId}
-    Enqueue(job)
+
+
+type JobQueue struct {
+    l *list.List
+    lastId int
+}
+
+type QueueElement interface {
+    Print()
+}
+
+// add a job to the queue
+func (jq *JobQueue) Enqueue(qe QueueElement) {
+    jq.l.PushBack(qe)
 }
 
 // print an overview of the current queue
-func PrintQueue() {
-    for j := queue.Front(); j != nil; j = j.Next() {
-        fmt.Printf("job: %v\n", j.Value)
+func (jq *JobQueue) Print() {
+    for j := jq.l.Front(); j != nil; j = j.Next() {
+        j.Value.(QueueElement).Print()
     }
 }
+
+// create a new Job and Enqueue() it
+func (jq *JobQueue) NewJob(name string) {
+    jq.lastId++
+    job := Job{name, jq.lastId}
+    jq.Enqueue(&job)
+}
+
+// the job queue for this broker
+var Queue = JobQueue{list.New(), 0}
+
