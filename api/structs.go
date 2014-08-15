@@ -13,10 +13,10 @@ type Job struct {
     EstDuration time.Duration
 }
 
-// Job describes a job.
+// SubmittedJob describes a job that is in the queue now.
 type SubmittedJob struct {
     Offer
-    Id int
+    ID int
 }
 
 // Offer holds the data about a broker's offer.
@@ -25,7 +25,7 @@ type Offer struct {
     EstCompletionTime time.Time
 }
 
-// BrokerInfo describes the broker.
+// Broker describes the broker.
 type Broker struct {
     Name string
     Note string
