@@ -3,7 +3,6 @@ package main
 
 import (
 	"fmt"
-	"time"
 	"net/http"
 	"encoding/json"
 
@@ -35,7 +34,7 @@ func createOffer(manifest *api.Job) api.Offer {
 	price := 0.0
 	price += 2.0 * manifest.EstDuration.Hours()
 
-	completionTime := time.Now()
+	completionTime := Queue.EstTime()
 	completionTime.Add(manifest.EstDuration)
 
 	return api.Offer{price, completionTime}

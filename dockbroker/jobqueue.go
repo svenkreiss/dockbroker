@@ -20,8 +20,8 @@ type Job struct {
 
 // Print Job information.
 func (j *Job) Print() {
-    fmt.Printf("job: name=%s, id=%d, started=%v, finished=%v\n",
-               j.Manifest.Name, j.id, j.Started, j.Finished)
+    fmt.Printf("job: name=%s, id=%d, estdur=%v, started=%v, finished=%v\n",
+               j.Manifest.Name, j.id, j.Manifest.EstDuration, j.Started, j.Finished)
 }
 
 
@@ -61,6 +61,27 @@ func (jq *JobQueue) NewJob(manifest api.Job) int {
     jq.Enqueue(job)
 
     return jq.lastID
+}
+
+// EstTime estimates the time when this queue will be completed.
+func (jq *JobQueue) EstTime() time.Time {
+    r := time.Now()
+    for j := jq.l.Front(); j != nil; j = j.Next() {
+        job := j.Value.(*Job)
+
+        if job.Started == nil && job.Finished == nil {
+            // job hasn't started yet
+            r = r.Add(job.Manifest.EstDuration)
+        } else if job.Started != nil && job.Finished == nil {
+            // job has started and is running
+
+            // is it before the estimated finish time?
+            if time.Since(*job.Started) < job.Manifest.EstDuration {
+                r = r.Add(job.Manifest.EstDuration - time.Since(*job.Started))
+            }
+        }
+    }
+    return r
 }
 
 // the job queue for this broker
