@@ -9,13 +9,19 @@ import (
 type Job struct {
     Name string
     Submitter string
-    EstDuration time.Duration
     MaxDuration time.Duration
+    EstDuration time.Duration
+}
+
+// Job describes a job.
+type SubmittedJob struct {
+    Offer
+    Id int
 }
 
 // Offer holds the data about a broker's offer.
 type Offer struct {
-    Price float32
+    Price float64
     EstCompletionTime time.Time
 }
 

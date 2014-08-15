@@ -40,22 +40,27 @@ type QueueElement interface {
 // Enqueue adds a job to the queue.
 func (jq *JobQueue) Enqueue(qe QueueElement) {
     jq.l.PushBack(qe)
+    jq.Print()
 }
 
 // Print an overview of the current queue.
 func (jq *JobQueue) Print() {
+    fmt.Println("--- current queue ---")
     for j := jq.l.Front(); j != nil; j = j.Next() {
         j.Value.(QueueElement).Print()
     }
 }
 
 // NewJob creates a new Job and enqueues it.
-func (jq *JobQueue) NewJob(manifest api.Job) {
+func (jq *JobQueue) NewJob(manifest api.Job) int {
     jq.lastID++
+
     job := new(Job)
     job.Manifest = manifest
     job.id = jq.lastID
     jq.Enqueue(job)
+
+    return jq.lastID
 }
 
 // the job queue for this broker

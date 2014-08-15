@@ -31,20 +31,43 @@ func infoHandler(r *http.Request) interface{} {
 	return api.Broker{"Paul", r.URL.Path}
 }
 
+func createOffer(manifest api.Job) api.Offer {
+	price := 0.0
+	price += 2.0 * manifest.EstDuration.Hours()
+
+	completionTime := time.Now()
+	completionTime.Add(manifest.EstDuration)
+
+	return api.Offer{price, completionTime}
+}
+
 // Returns a struct for an offer request.
 func offerHandler(r *http.Request) interface{} {
-	return api.Offer{20.50, time.Now().Add(10 * time.Minute)}
+	// extract manifest api.Job from request
+	decoder := json.NewDecoder(r.Body)
+	var manifest api.Job
+	err := decoder.Decode(&manifest)
+	if err != nil { panic(err) }
+
+	return createOffer(manifest)
+}
+
+// Returns a struct for a submitted job.
+func submitHandler(r *http.Request) interface{} {
+	// extract manifest api.Job from request
+	decoder := json.NewDecoder(r.Body)
+	var manifest api.Job
+	err := decoder.Decode(&manifest)
+	if err != nil { panic(err) }
+
+	return api.SubmittedJob{createOffer(manifest), Queue.NewJob(manifest)}
 }
 
 
 func main() {
-    fmt.Printf("Queuing fake jobs.\n")
-    Queue.NewJob(api.Job{"test job", "me", 24 * time.Hour, 12 * time.Hour})
-    fmt.Printf("Printing fake jobs.\n")
-    Queue.Print()
-
 	fmt.Printf("Starting dockbroker daemon on port 4027.\n")
     http.HandleFunc("/info/", makeJSONHandler(infoHandler))
     http.HandleFunc("/offer/", makeJSONHandler(offerHandler))
+    http.HandleFunc("/submit/", makeJSONHandler(submitHandler))
     http.ListenAndServe(":4027", nil)
 }
