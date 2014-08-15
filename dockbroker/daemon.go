@@ -25,13 +25,13 @@ func makeJSONHandler(fn func(r *http.Request) interface{}) http.HandlerFunc {
 	}
 }
 
-
-// Returns a struct for an info request.
-func infoHandler(r *http.Request) interface{} {
-	return api.Broker{"Paul", r.URL.Path}
+func handleJSONPostRequest(r *http.Request, result interface{}) {
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(result)
+	if err != nil { panic(err) }
 }
 
-func createOffer(manifest api.Job) api.Offer {
+func createOffer(manifest *api.Job) api.Offer {
 	price := 0.0
 	price += 2.0 * manifest.EstDuration.Hours()
 
@@ -41,26 +41,26 @@ func createOffer(manifest api.Job) api.Offer {
 	return api.Offer{price, completionTime}
 }
 
+
+// Returns a struct for an info request.
+func infoHandler(r *http.Request) interface{} {
+	return api.Broker{"Paul", r.URL.Path}
+}
+
 // Returns a struct for an offer request.
 func offerHandler(r *http.Request) interface{} {
-	// extract manifest api.Job from request
-	decoder := json.NewDecoder(r.Body)
-	var manifest api.Job
-	err := decoder.Decode(&manifest)
-	if err != nil { panic(err) }
+	manifest := new(api.Job)
+	handleJSONPostRequest(r, manifest)
 
 	return createOffer(manifest)
 }
 
 // Returns a struct for a submitted job.
 func submitHandler(r *http.Request) interface{} {
-	// extract manifest api.Job from request
-	decoder := json.NewDecoder(r.Body)
-	var manifest api.Job
-	err := decoder.Decode(&manifest)
-	if err != nil { panic(err) }
+	manifest := new(api.Job)
+	handleJSONPostRequest(r, manifest)
 
-	return api.SubmittedJob{createOffer(manifest), Queue.NewJob(manifest)}
+	return api.SubmittedJob{createOffer(manifest), Queue.NewJob(*manifest)}
 }
 
 
